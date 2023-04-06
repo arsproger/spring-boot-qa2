@@ -1,11 +1,13 @@
 package com.it.academy.springbootqa2.services;
 
+import com.it.academy.springbootqa2.StoreStatus;
 import com.it.academy.springbootqa2.models.Store;
 import com.it.academy.springbootqa2.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,13 +69,23 @@ public class StoreService {
         if (open != null) {
             LocalTime now = LocalTime.now();
 
-            if (open == 0) {
-                stores = stores.stream()
-                        .filter(store -> now.isBefore(store.getOpeningTime()) || now.isAfter(store.getClosingTime())).toList();
-            } else if (open == 1) {
-                stores = stores.stream()
-                        .filter(store -> now.isAfter(store.getOpeningTime()) && now.isBefore(store.getClosingTime())).toList();
-            }
+            StoreStatus status = StoreStatus.values()[open];
+
+            stores = stores.stream()
+                    .filter(store -> {
+                        LocalTime openingTime = store.getOpeningTime();
+                        LocalTime closingTime = store.getClosingTime();
+
+                        if (closingTime.isBefore(openingTime)) {
+                            closingTime = closingTime.plusHours(24);
+                        }
+
+                        boolean isOpen = now.isAfter(openingTime) && now.isBefore(closingTime);
+
+                        return (status == StoreStatus.OPEN && isOpen) ||
+                                (status == StoreStatus.CLOSED && !isOpen);
+                    })
+                    .collect(Collectors.toList());
         }
 
         return stores;

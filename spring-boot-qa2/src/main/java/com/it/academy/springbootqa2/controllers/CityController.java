@@ -4,9 +4,7 @@ import com.it.academy.springbootqa2.dto.CityDTO;
 import com.it.academy.springbootqa2.mappers.CityMapper;
 import com.it.academy.springbootqa2.services.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,26 @@ public class CityController {
     @GetMapping
     public List<CityDTO> getAll() {
         return cityService.getAll().stream().map(cityMapper::convertToDTO).toList();
+    }
+
+    @GetMapping("/{id}")
+    public CityDTO getById(@PathVariable Long id) {
+        return cityMapper.convertToDTO(cityService.getById(id));
+    }
+
+    @PostMapping
+    public Long save(@RequestBody CityDTO cityDTO) {
+        return cityService.save(cityMapper.convertToEntity(cityDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public Long deleteById(@PathVariable Long id) {
+        return cityService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Long update(@PathVariable Long id, @RequestBody CityDTO cityDTO) {
+        return cityService.updateById(id, cityMapper.convertToEntity(cityDTO));
     }
 
 }

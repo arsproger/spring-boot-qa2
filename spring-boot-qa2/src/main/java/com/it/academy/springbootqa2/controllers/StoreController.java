@@ -29,8 +29,24 @@ public class StoreController {
         return storeService.getStores(city, street, open).stream().map(storeMapper::convertToDTO).toList();
     }
 
+    @GetMapping("/{id}")
+    public StoreDTO getById(@PathVariable Long id) {
+        return storeMapper.convertToDTO(storeService.getById(id));
+    }
+
     @PostMapping
     public Long save(StoreDTO storeDTO) {
         return storeService.save(storeMapper.convertToEntity(storeDTO));
     }
+
+    @DeleteMapping("/{id}")
+    public Long deleteById(@PathVariable Long id) {
+        return storeService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Long update(@PathVariable Long id, @RequestBody StoreDTO storeDTO) {
+        return storeService.updateById(id, storeMapper.convertToEntity(storeDTO));
+    }
+
 }
