@@ -1,4 +1,4 @@
-package com.it.academy.springbootqa2.config;
+package com.it.academy.springbootqa2.handler;
 
 import com.it.academy.springbootqa2.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +47,10 @@ public class GlobalExceptionHandler {
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
         return new ResponseEntity<>(streetErrorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(RuntimeException e) {
+        return new ResponseEntity<>("Bad Request!", HttpStatus.BAD_REQUEST);
+    }
+
 }
