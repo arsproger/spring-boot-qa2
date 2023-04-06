@@ -1,13 +1,13 @@
 package com.it.academy.springbootqa2.services;
 
-import com.it.academy.springbootqa2.StoreStatus;
+import com.it.academy.springbootqa2.enums.StoreStatus;
+import com.it.academy.springbootqa2.exceptions.StoreNotFoundException;
 import com.it.academy.springbootqa2.models.Store;
 import com.it.academy.springbootqa2.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +20,8 @@ public class StoreService {
         this.storeRepository = storeRepository;
     }
 
-    public List<Store> getAll() {
-        return storeRepository.findAll();
-    }
-
     public Store getById(Long id) {
-        return storeRepository.findById(id).orElse(null);
+        return storeRepository.findById(id).orElseThrow(StoreNotFoundException::new);
     }
 
     public Long save(Store store) {
@@ -33,22 +29,19 @@ public class StoreService {
     }
 
     public Long deleteById(Long id) {
+        storeRepository.findById(id).orElseThrow(StoreNotFoundException::new);
         storeRepository.deleteById(id);
         return id;
     }
 
     public Long updateById(Long id, Store updatedStore) {
-        Store store = storeRepository.findById(id).orElse(null);
+        Store store = storeRepository.findById(id).orElseThrow(StoreNotFoundException::new);
 
-        if (store != null) {
-            store.setName(updatedStore.getName());
-            store.setStreet(updatedStore.getStreet());
-            store.setOpeningTime(updatedStore.getOpeningTime());
-            store.setClosingTime(updatedStore.getClosingTime());
-            return id;
-        }
-
-        return 0L;
+        store.setName(updatedStore.getName());
+        store.setStreet(updatedStore.getStreet());
+        store.setOpeningTime(updatedStore.getOpeningTime());
+        store.setClosingTime(updatedStore.getClosingTime());
+        return storeRepository.save(store).getId();
     }
 
     public List<Store> getStores(String city, String street, Integer open) {
@@ -90,6 +83,5 @@ public class StoreService {
 
         return stores;
     }
-
 
 }

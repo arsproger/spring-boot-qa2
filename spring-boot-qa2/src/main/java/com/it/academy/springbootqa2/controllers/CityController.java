@@ -4,6 +4,8 @@ import com.it.academy.springbootqa2.dto.CityDTO;
 import com.it.academy.springbootqa2.mappers.CityMapper;
 import com.it.academy.springbootqa2.services.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,28 +23,34 @@ public class CityController {
     }
 
     @GetMapping
-    public List<CityDTO> getAll() {
-        return cityService.getAll().stream().map(cityMapper::convertToDTO).toList();
+    public ResponseEntity<List<CityDTO>> getAll() {
+        List<CityDTO> cityDTOList = cityService.getAll().stream().map(cityMapper::convertToDTO).toList();
+        return new ResponseEntity<>(cityDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public CityDTO getById(@PathVariable Long id) {
-        return cityMapper.convertToDTO(cityService.getById(id));
+    public ResponseEntity<CityDTO> getById(@PathVariable Long id) {
+        CityDTO cityDTO = cityMapper.convertToDTO(cityService.getById(id));
+        return new ResponseEntity<>(cityDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    public Long save(@RequestBody CityDTO cityDTO) {
-        return cityService.save(cityMapper.convertToEntity(cityDTO));
+    public ResponseEntity<Long> save(@RequestBody CityDTO cityDTO) {
+        Long savedCityId = cityService.save(cityMapper.convertToEntity(cityDTO));
+        return new ResponseEntity<>(savedCityId, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteById(@PathVariable Long id) {
-        return cityService.deleteById(id);
+    public ResponseEntity<Long> deleteById(@PathVariable Long id) {
+        Long deletedCityId = cityService.deleteById(id);
+        return new ResponseEntity<>(deletedCityId, HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody CityDTO cityDTO) {
-        return cityService.updateById(id, cityMapper.convertToEntity(cityDTO));
+    public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody CityDTO cityDTO) {
+        Long updatedCityId = cityService.updateById(id, cityMapper.convertToEntity(cityDTO));
+        return new ResponseEntity<>(updatedCityId, HttpStatus.OK);
     }
 
 }
+

@@ -1,4 +1,4 @@
-package com.it.academy.springbootqa2;
+package com.it.academy.springbootqa2.enums;
 
 public enum StoreStatus {
     CLOSED,

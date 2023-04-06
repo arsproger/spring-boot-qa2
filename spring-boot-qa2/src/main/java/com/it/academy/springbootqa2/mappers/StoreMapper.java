@@ -1,8 +1,6 @@
 package com.it.academy.springbootqa2.mappers;
 
-import com.it.academy.springbootqa2.dto.CityDTO;
 import com.it.academy.springbootqa2.dto.StoreDTO;
-import com.it.academy.springbootqa2.models.City;
 import com.it.academy.springbootqa2.models.Store;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
