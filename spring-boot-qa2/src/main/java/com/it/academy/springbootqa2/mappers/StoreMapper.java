@@ -4,6 +4,7 @@ import com.it.academy.springbootqa2.dto.StoreDTO;
 import com.it.academy.springbootqa2.models.Store;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.stereotype.Component;
 
 @Component

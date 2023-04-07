@@ -29,7 +29,8 @@ public class StreetService {
         return streetRepository.findById(id).orElseThrow(StreetNotFoundException::new);
     }
 
-    public Long save(Street street) {
+    public Long save(Long cityId, Street street) {
+        street.setCity(cityRepository.findById(cityId).orElseThrow(CityNotFoundException::new));
         return streetRepository.save(street).getId();
     }
 

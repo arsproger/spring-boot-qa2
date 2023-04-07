@@ -2,8 +2,10 @@ package com.it.academy.springbootqa2.services;
 
 import com.it.academy.springbootqa2.enums.StoreStatus;
 import com.it.academy.springbootqa2.exceptions.StoreNotFoundException;
+import com.it.academy.springbootqa2.exceptions.StreetNotFoundException;
 import com.it.academy.springbootqa2.models.Store;
 import com.it.academy.springbootqa2.repositories.StoreRepository;
+import com.it.academy.springbootqa2.repositories.StreetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +16,20 @@ import java.util.stream.Collectors;
 @Service
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final StreetRepository streetRepository;
 
     @Autowired
-    public StoreService(StoreRepository storeRepository) {
+    public StoreService(StoreRepository storeRepository, StreetRepository streetRepository) {
         this.storeRepository = storeRepository;
+        this.streetRepository = streetRepository;
     }
 
     public Store getById(Long id) {
         return storeRepository.findById(id).orElseThrow(StoreNotFoundException::new);
     }
 
-    public Long save(Store store) {
+    public Long save(Long streetId, Store store) {
+        store.setStreet(streetRepository.findById(streetId).orElseThrow(StreetNotFoundException::new));
         return storeRepository.save(store).getId();
     }
 
@@ -38,7 +43,6 @@ public class StoreService {
         Store store = storeRepository.findById(id).orElseThrow(StoreNotFoundException::new);
 
         store.setName(updatedStore.getName());
-        store.setStreet(updatedStore.getStreet());
         store.setOpeningTime(updatedStore.getOpeningTime());
         store.setClosingTime(updatedStore.getClosingTime());
         return storeRepository.save(store).getId();

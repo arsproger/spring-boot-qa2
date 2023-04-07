@@ -43,8 +43,8 @@ public class StreetController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(@RequestBody StreetDTO streetDTO) {
-        Long savedStreetId = streetService.save(streetMapper.convertToEntity(streetDTO));
+    public ResponseEntity<Long> save(@RequestParam Long cityId, @RequestBody StreetDTO streetDTO) {
+        Long savedStreetId = streetService.save(cityId, streetMapper.convertToEntity(streetDTO));
         return new ResponseEntity<>(savedStreetId, HttpStatus.CREATED);
     }
 

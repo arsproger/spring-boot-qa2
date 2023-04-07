@@ -6,15 +6,16 @@ import com.it.academy.springbootqa2.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping("/store")
+@Validated
 public class StoreController {
     private final StoreService storeService;
     private final StoreMapper storeMapper;
@@ -29,7 +30,7 @@ public class StoreController {
     public ResponseEntity<List<StoreDTO>> getStores(@RequestParam(required = false) String city,
                                                     @RequestParam(required = false) String street,
                                                     @RequestParam(required = false)
-                                                    @Valid @Min(value = 0) @Max(value = 1) Integer open) {
+                                                    @Min(0) @Max(1) Integer open) {
         List<StoreDTO> storeDTOList = storeService.getStores(city, street, open)
                 .stream().map(storeMapper::convertToDTO).toList();
         return new ResponseEntity<>(storeDTOList, HttpStatus.OK);
@@ -42,8 +43,8 @@ public class StoreController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> save(StoreDTO storeDTO) {
-        Long savedStoreId = storeService.save(storeMapper.convertToEntity(storeDTO));
+    public ResponseEntity<Long> save(@RequestParam Long streetId, @RequestBody StoreDTO storeDTO) {
+        Long savedStoreId = storeService.save(streetId, storeMapper.convertToEntity(storeDTO));
         return new ResponseEntity<>(savedStoreId, HttpStatus.CREATED);
     }
 
