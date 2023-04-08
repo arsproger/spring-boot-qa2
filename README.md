@@ -108,3 +108,11 @@ Hibernate ORM.
 Для работы с базой данных в проекте используется Spring Data JPA.
 Если вы захотите использовать другую реляционную
 СУБД (например, PostgreSQL), необходимо будет изменить настройки в файле application.properties.
+
+Postman коллекции:
+
+City: https://api.postman.com/collections/25575265-9685904a-94d4-459a-82fe-f0eb2d67f72b?access_key=PMAT-01GXG9FJ8G4HM0WH8WC8RCY4J1
+
+Store: https://api.postman.com/collections/25575265-fd916827-4356-4fb5-8d62-6678c665f847?access_key=PMAT-01GXG9G78HMH7QGVCK1GQDGTE7
+
+Street: https://api.postman.com/collections/25575265-bcb0722f-0368-4bd8-a461-8658ccf39a01?access_key=PMAT-01GXG9GYEAK9CV27HP0971SKSJ
